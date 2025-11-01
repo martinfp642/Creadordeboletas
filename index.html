@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generador de Boletas - Física Simple</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         @import url('https://fonts.cdnfonts.com/css/proxima-nova-2');
         @import url('https://fonts.cdnfonts.com/css/8bit-operator');
@@ -166,6 +167,18 @@
             color: #000;
         }
 
+        .btn-back {
+            background-color: #fff;
+            color: #000;
+            border: 2px solid #000;
+        }
+
+        .btn-download {
+            background-color: #000;
+            color: #fff;
+            border: 3px solid #000;
+        }
+
         .total-section {
             margin-top: 25px;
             padding-top: 20px;
@@ -204,135 +217,180 @@
             }
         }
 
-        /* Estilos para la boleta imprimible */
+        /* Estilos para la boleta */
         .boleta {
+            width: 300px;
+            margin: 20px auto;
+            padding: 15px;
+            font-family: '8bit Operator+', monospace;
+            font-size: 10pt;
+            color: #000;
+            background-color: #fff;
+        }
+
+        .boleta-header {
+            text-align: center;
+            margin-bottom: 10px;
+            border-bottom: 1px dashed #000;
+            padding-bottom: 10px;
+        }
+
+        .boleta-logo {
+            font-family: 'Proxima Nova', sans-serif;
+            font-size: 20pt;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+
+        .boleta-lema {
+            font-family: 'Proxima Nova', sans-serif;
+            font-size: 9pt;
+            font-style: italic;
+            margin-bottom: 5px;
+            color: #000;
+        }
+
+        .boleta-contacto {
+            font-size: 8pt;
+            line-height: 1.4;
+        }
+
+        .boleta-titulo {
+            text-align: center;
+            font-weight: bold;
+            font-size: 11pt;
+            margin: 10px 0;
+            border-top: 1px dashed #000;
+            border-bottom: 1px dashed #000;
+            padding: 6px 0;
+        }
+
+        .boleta-info {
+            font-size: 9pt;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .boleta-items {
+            margin: 10px 0;
+        }
+
+        .boleta-item-header {
+            display: grid;
+            grid-template-columns: 40px 1fr 55px 65px;
+            font-size: 8pt;
+            font-weight: bold;
+            border-bottom: 1px solid #000;
+            padding-bottom: 4px;
+            margin-bottom: 6px;
+        }
+
+        .boleta-item {
+            display: grid;
+            grid-template-columns: 40px 1fr 55px 65px;
+            font-size: 9pt;
+            margin-bottom: 5px;
+            line-height: 1.4;
+        }
+
+        .boleta-total {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 2px solid #000;
+            font-weight: bold;
+            font-size: 12pt;
+            text-align: right;
+        }
+
+        .boleta-pago {
+            margin-top: 10px;
+            font-size: 9pt;
+        }
+
+        .boleta-footer {
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px dashed #000;
+            text-align: center;
+        }
+
+        .boleta-gracias {
+            font-size: 11pt;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .boleta-redes {
+            font-size: 8pt;
+            line-height: 1.6;
+        }
+
+        .boleta-disclaimer {
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px dashed #000;
+            font-size: 6pt;
+            line-height: 1.5;
+            text-align: justify;
+        }
+
+        /* Sección de vista previa */
+        .preview-section {
             display: none;
         }
 
-        @media print {
-            body {
-                background: white;
-                padding: 0;
-            }
+        .preview-section.visible {
+            display: block;
+        }
 
-            .container {
-                display: none;
-            }
+        .preview-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 3px solid #000;
+            background: #fff;
+        }
 
-            .boleta {
-                display: block;
-                width: 80mm;
-                max-width: 80mm;
-                margin: 0 auto;
-                padding: 5mm;
-                font-family: '8bit Operator+', monospace;
-                font-size: 9pt;
-                color: #000;
-            }
+        .preview-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #000;
+            border-bottom: 2px solid #000;
+            padding-bottom: 10px;
+            font-family: 'Proxima Nova', sans-serif;
+        }
 
-            .boleta-header {
-                text-align: center;
-                margin-bottom: 8px;
-                border-bottom: 1px dashed #000;
-                padding-bottom: 8px;
-            }
+        .preview-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
 
-            .boleta-logo {
-                font-family: 'Proxima Nova', sans-serif;
-                font-size: 18pt;
-                font-weight: bold;
-                margin-bottom: 4px;
-            }
+        .preview-buttons button {
+            flex: 1;
+        }
 
-            .boleta-contacto {
-                font-size: 7pt;
-                line-height: 1.3;
-            }
+        #canvasContainer {
+            text-align: center;
+            margin: 20px 0;
+            background: #f5f5f5;
+            padding: 20px;
+        }
 
-            .boleta-titulo {
-                text-align: center;
-                font-weight: bold;
-                font-size: 10pt;
-                margin: 8px 0;
-                border-top: 1px dashed #000;
-                border-bottom: 1px dashed #000;
-                padding: 5px 0;
-            }
+        #canvasContainer canvas {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #000;
+        }
 
-            .boleta-info {
-                font-size: 8pt;
-                margin-bottom: 8px;
-                line-height: 1.5;
-            }
-
-            .boleta-items {
-                margin: 8px 0;
-            }
-
-            .boleta-item-header {
-                display: grid;
-                grid-template-columns: 35px 1fr 50px 60px;
-                font-size: 7pt;
-                font-weight: bold;
-                border-bottom: 1px solid #000;
-                padding-bottom: 3px;
-                margin-bottom: 5px;
-            }
-
-            .boleta-item {
-                display: grid;
-                grid-template-columns: 35px 1fr 50px 60px;
-                font-size: 8pt;
-                margin-bottom: 4px;
-                line-height: 1.3;
-            }
-
-            .boleta-total {
-                margin-top: 8px;
-                padding-top: 8px;
-                border-top: 2px solid #000;
-                font-weight: bold;
-                font-size: 11pt;
-                text-align: right;
-            }
-
-            .boleta-pago {
-                margin-top: 8px;
-                font-size: 8pt;
-            }
-
-            .boleta-footer {
-                margin-top: 10px;
-                padding-top: 8px;
-                border-top: 1px dashed #000;
-                text-align: center;
-            }
-
-            .boleta-gracias {
-                font-size: 10pt;
-                font-weight: bold;
-                margin-bottom: 6px;
-            }
-
-            .boleta-redes {
-                font-size: 7pt;
-                line-height: 1.5;
-            }
-
-            .boleta-disclaimer {
-                margin-top: 10px;
-                padding-top: 8px;
-                border-top: 1px dashed #000;
-                font-size: 5pt;
-                line-height: 1.4;
-                text-align: justify;
-            }
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Generador de Boletas - Física Simple ;)</h1>
+    <div class="container" id="formContainer">
+        <h1>Física Simple ;)</h1>
 
         <div class="form-section">
             <label>Fecha:</label>
@@ -379,17 +437,36 @@
 
             <div class="form-section" id="otrosPagoDiv" style="display: none;">
                 <label>Especificar forma de pago:</label>
-                <input type="text" id="otrosPago" placeholder="Ej: Tarjeta, MercadoPago, etc.">
+                <input type="text" id="otrosPago" placeholder="Ej: Tarjeta, Débito, etc.">
             </div>
         </div>
 
-        <button class="btn btn-print" onclick="generarBoleta()">GENERAR E IMPRIMIR BOLETA</button>
+        <button class="btn btn-print" onclick="generarBoleta()">GENERAR IMAGEN DE BOLETA</button>
     </div>
 
-    <!-- Boleta para imprimir -->
-    <div class="boleta" id="boleta">
+    <!-- Sección de vista previa -->
+    <div class="preview-section" id="previewSection">
+        <div class="preview-container">
+            <h2>Vista Previa de la Boleta</h2>
+            
+            <div id="canvasContainer"></div>
+
+            <div class="preview-buttons">
+                <button class="btn btn-back" onclick="volverAlFormulario()">← VOLVER AL FORMULARIO</button>
+                <button class="btn btn-download" onclick="descargarImagen()">📥 DESCARGAR IMAGEN</button>
+            </div>
+
+            <p style="text-align: center; margin-top: 20px; font-size: 14px; color: #666;">
+                💡 Abre la imagen en Fun Print para imprimir tu boleta
+            </p>
+        </div>
+    </div>
+
+    <!-- Boleta oculta para generar imagen -->
+    <div class="boleta hidden" id="boleta">
         <div class="boleta-header">
             <div class="boleta-logo">Física Simple ;)</div>
+            <div class="boleta-lema">Simplificando la enseñanza.</div>
             <div class="boleta-contacto">
                 Instagram: @fisicasimpleuy<br>
                 Facebook: Física Simple<br>
@@ -442,6 +519,7 @@
 
     <script>
         let itemCount = 0;
+        let imagenGenerada = null;
 
         // Establecer fecha actual
         document.getElementById('fecha').valueAsDate = new Date();
@@ -503,7 +581,7 @@
             document.getElementById('totalDisplay').textContent = total.toFixed(2);
         }
 
-        function generarBoleta() {
+        async function generarBoleta() {
             // Validar que haya al menos un producto
             const items = document.querySelectorAll('.item-row');
             if (items.length === 0) {
@@ -581,10 +659,97 @@
             }
             document.getElementById('boletaPago').textContent = formaPago;
 
-            // Imprimir
-            setTimeout(() => {
-                window.print();
-            }, 100);
+            // Mostrar la boleta temporalmente para capturarla
+            const boleta = document.getElementById('boleta');
+            boleta.classList.remove('hidden');
+            boleta.style.position = 'fixed';
+            boleta.style.left = '0';
+            boleta.style.top = '0';
+            boleta.style.zIndex = '-1';
+
+            // Esperar un momento para que las fuentes se carguen
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            // Generar la imagen con html2canvas
+            try {
+                const canvas = await html2canvas(boleta, {
+                    backgroundColor: '#ffffff',
+                    scale: 3, // Mayor calidad
+                    logging: false,
+                    useCORS: true
+                });
+
+                // Ocultar la boleta nuevamente
+                boleta.classList.add('hidden');
+                boleta.style.position = '';
+                boleta.style.left = '';
+                boleta.style.top = '';
+                boleta.style.zIndex = '';
+
+                // Guardar la imagen
+                imagenGenerada = canvas;
+
+                // Mostrar la vista previa
+                mostrarVistaPrevia(canvas);
+
+            } catch (error) {
+                console.error('Error al generar la imagen:', error);
+                alert('Hubo un error al generar la imagen. Por favor intenta nuevamente.');
+                boleta.classList.add('hidden');
+            }
+        }
+
+        function mostrarVistaPrevia(canvas) {
+            // Ocultar formulario
+            document.getElementById('formContainer').style.display = 'none';
+            
+            // Mostrar vista previa
+            const previewSection = document.getElementById('previewSection');
+            previewSection.classList.add('visible');
+
+            // Agregar canvas al contenedor
+            const canvasContainer = document.getElementById('canvasContainer');
+            canvasContainer.innerHTML = '';
+            canvasContainer.appendChild(canvas);
+
+            // Scroll al inicio
+            window.scrollTo(0, 0);
+        }
+
+        function volverAlFormulario() {
+            // Ocultar vista previa
+            document.getElementById('previewSection').classList.remove('visible');
+            
+            // Mostrar formulario
+            document.getElementById('formContainer').style.display = 'block';
+
+            // Scroll al inicio
+            window.scrollTo(0, 0);
+        }
+
+        function descargarImagen() {
+            if (!imagenGenerada) {
+                alert('No hay imagen para descargar');
+                return;
+            }
+
+            // Convertir canvas a blob
+            imagenGenerada.toBlob(function(blob) {
+                // Crear un enlace de descarga
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                
+                // Generar nombre de archivo con fecha
+                const fecha = new Date();
+                const nombreArchivo = `boleta-fisica-simple-${fecha.getFullYear()}${String(fecha.getMonth()+1).padStart(2,'0')}${String(fecha.getDate()).padStart(2,'0')}-${String(fecha.getHours()).padStart(2,'0')}${String(fecha.getMinutes()).padStart(2,'0')}.png`;
+                
+                link.download = nombreArchivo;
+                link.href = url;
+                link.click();
+                
+                // Liberar el objeto URL
+                URL.revokeObjectURL(url);
+            });
         }
 
         // Agregar un item inicial
